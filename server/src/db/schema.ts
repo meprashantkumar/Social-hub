@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm";
 import {
   index,
+  integer,
   pgEnum,
   pgTable,
   text,
@@ -18,6 +19,9 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   name: text("name").notNull(),
   avatarUrl: text("avatar_url"),
+  // Pro subscription expiry. Null or in the past = Free tier. Extended by a
+  // verified Razorpay payment (one-time-per-period billing).
+  proExpiresAt: timestamp("pro_expires_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
@@ -280,3 +284,32 @@ export type Post = typeof posts.$inferSelect;
 export type PostTarget = typeof postTargets.$inferSelect;
 export type PostStatus = (typeof postStatusEnum.enumValues)[number];
 export type PublishVisibility = (typeof publishVisibilityEnum.enumValues)[number];
+
+// ---------------------------------------------------------------------------
+// Billing (Razorpay, one-time-per-period Pro subscriptions)
+// ---------------------------------------------------------------------------
+
+export const billingPlanEnum = pgEnum("billing_plan", ["monthly", "half_yearly", "yearly"]);
+export const paymentStatusEnum = pgEnum("payment_status", ["created", "paid", "failed"]);
+
+export const payments = pgTable(
+  "payments",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    // Razorpay order id (created server-side) and, once paid, the payment id.
+    razorpayOrderId: text("razorpay_order_id").notNull().unique(),
+    razorpayPaymentId: text("razorpay_payment_id"),
+    plan: billingPlanEnum("plan").notNull(),
+    amount: integer("amount").notNull(), // in paise
+    status: paymentStatusEnum("status").notNull().default("created"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("payments_user_idx").on(table.userId)]
+);
+
+export type Payment = typeof payments.$inferSelect;
+export type BillingPlan = (typeof billingPlanEnum.enumValues)[number];

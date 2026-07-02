@@ -9,6 +9,7 @@ import {
   type WorkspaceRole,
 } from "../../db/schema";
 import { badRequest, conflict, forbidden, notFound } from "../../lib/errors";
+import { assertCanCreateWorkspace, assertCanInviteMember } from "../billing/billing.service";
 
 const INVITE_TTL_DAYS = 7;
 const newToken = () => randomBytes(24).toString("hex");
@@ -16,6 +17,7 @@ const inviteExpiry = () => new Date(Date.now() + INVITE_TTL_DAYS * 24 * 60 * 60 
 
 /** Create a workspace and make the creator its OWNER, atomically. */
 export const createWorkspace = async (userId: string, name: string) => {
+  await assertCanCreateWorkspace(userId);
   const created = await db.transaction(async (tx) => {
     const [ws] = await tx.insert(workspaces).values({ name, ownerId: userId }).returning();
     await tx.insert(workspaceMembers).values({ workspaceId: ws.id, userId, role: "OWNER" });
@@ -88,6 +90,7 @@ export const inviteMember = async (
   role: WorkspaceRole,
   invitedById: string
 ) => {
+  await assertCanInviteMember(workspaceId, email);
   const existingUser = await db.query.users.findFirst({ where: eq(users.email, email) });
   if (existingUser) {
     const alreadyMember = await db.query.workspaceMembers.findFirst({

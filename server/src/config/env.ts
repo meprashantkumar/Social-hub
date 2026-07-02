@@ -50,6 +50,11 @@ const envSchema = z.object({
   X_CLIENT_ID: z.string().optional(),
   X_CLIENT_SECRET: z.string().optional(),
 
+  // Razorpay (subscription payments). Key id is safe to expose to the browser
+  // for Checkout; the secret signs orders + verifies payments and stays server-side.
+  RAZORPAY_KEY_ID: z.string().optional(),
+  RAZORPAY_KEY_SECRET: z.string().optional(),
+
   // Cloudinary (media uploads). Optional — uploads are "not configured" until set.
   // cloud_name + api_key are public; the api_secret signs uploads and must stay server-side.
   CLOUDINARY_CLOUD_NAME: z.string().optional(),

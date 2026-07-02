@@ -10,6 +10,8 @@ build/
 .env.local
 *.env
 !.env.example
+*.pem
+*.key
 
 # Logs
 logs/

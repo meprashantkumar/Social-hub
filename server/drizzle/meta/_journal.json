@@ -50,6 +50,13 @@
       "when": 1782922565657,
       "tag": "0006_omniscient_charles_xavier",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1783009080674,
+      "tag": "0007_crazy_archangel",
+      "breakpoints": true
     }
   ]
 }

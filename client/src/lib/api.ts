@@ -6,6 +6,8 @@ export interface User {
   name: string;
   avatarUrl: string | null;
   createdAt: string;
+  plan: "free" | "pro";
+  proExpiresAt: string | null;
 }
 
 export interface AuthResponse {
@@ -338,4 +340,45 @@ export interface WorkspaceAnalytics {
 export const analyticsApi = {
   get: (workspaceId: string) =>
     request<WorkspaceAnalytics>(`/analytics?workspaceId=${encodeURIComponent(workspaceId)}`),
+};
+
+// ---- Billing --------------------------------------------------------------
+
+export type BillingPlanId = "monthly" | "half_yearly" | "yearly";
+
+export interface BillingPlanOption {
+  id: BillingPlanId;
+  label: string;
+  priceLabel: string;
+  amount: number; // paise
+}
+
+export interface BillingStatus {
+  plan: "free" | "pro";
+  proExpiresAt: string | null;
+  limits: { workspaces: number; members: number; posts: number };
+  workspacesOwned: number;
+  plans: BillingPlanOption[];
+}
+
+export interface CreateOrderResult {
+  orderId: string;
+  amount: number;
+  currency: string;
+  keyId: string;
+  plan: BillingPlanId;
+}
+
+export interface RazorpayVerifyInput {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
+
+export const billingApi = {
+  status: () => request<BillingStatus>("/billing"),
+  createOrder: (plan: BillingPlanId) =>
+    request<CreateOrderResult>("/billing/order", { method: "POST", body: { plan } }),
+  verify: (payload: RazorpayVerifyInput) =>
+    request<BillingStatus>("/billing/verify", { method: "POST", body: payload }),
 };

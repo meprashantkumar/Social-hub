@@ -28,6 +28,7 @@ interface AppData {
   login: (input: LoginInput) => Promise<void>;
   register: (input: RegisterInput) => Promise<void>;
   logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 
   workspaces: WorkspaceSummary[];
   currentWorkspace: WorkspaceSummary | null;
@@ -139,6 +140,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, [resetSession]);
 
+  // Re-fetch the current user (e.g. after a plan upgrade) so plan-derived UI updates.
+  const refreshUser = useCallback(async () => {
+    try {
+      const { user: u } = await authApi.me();
+      setUser(u);
+    } catch {
+      /* ignore — a failed refresh just leaves the cached user */
+    }
+  }, []);
+
   const selectWorkspace = useCallback((id: string) => {
     setCurrentWorkspaceId(id);
     try {
@@ -175,6 +186,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         login,
         register,
         logout,
+        refreshUser,
         workspaces,
         currentWorkspace,
         workspacesLoading,

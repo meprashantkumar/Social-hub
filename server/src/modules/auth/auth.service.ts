@@ -44,15 +44,22 @@ export interface PublicUser {
   name: string;
   avatarUrl: string | null;
   createdAt: Date;
+  plan: "free" | "pro";
+  proExpiresAt: Date | null;
 }
 
-export const toPublicUser = (u: User): PublicUser => ({
-  id: u.id,
-  email: u.email,
-  name: u.name,
-  avatarUrl: u.avatarUrl,
-  createdAt: u.createdAt,
-});
+export const toPublicUser = (u: User): PublicUser => {
+  const isPro = !!u.proExpiresAt && u.proExpiresAt.getTime() > Date.now();
+  return {
+    id: u.id,
+    email: u.email,
+    name: u.name,
+    avatarUrl: u.avatarUrl,
+    createdAt: u.createdAt,
+    plan: isPro ? "pro" : "free",
+    proExpiresAt: u.proExpiresAt ?? null,
+  };
+};
 
 /** Create a refresh-token row and sign both tokens for the given user. */
 const issueTokens = async (user: User, ctx: AuthContext): Promise<IssuedTokens> => {

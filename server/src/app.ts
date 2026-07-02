@@ -6,6 +6,7 @@ import { env } from "./config/env";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import { authRouter } from "./modules/auth/auth.routes";
 import { analyticsRouter } from "./modules/analytics/analytics.routes";
+import { billingRouter } from "./modules/billing/billing.routes";
 import { connectionsRouter } from "./modules/connections/connections.routes";
 import { mediaRouter } from "./modules/media/media.routes";
 import { postsRouter } from "./modules/posts/posts.routes";
@@ -39,6 +40,7 @@ export const createApp = (): Express => {
   app.use("/api/media", mediaRouter);
   app.use("/api/posts", postsRouter);
   app.use("/api/analytics", analyticsRouter);
+  app.use("/api/billing", billingRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

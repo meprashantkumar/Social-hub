@@ -4,6 +4,7 @@ import { Login } from "@/pages/auth/Login";
 import { Register } from "@/pages/auth/Register";
 import { AcceptInvite } from "@/pages/invite/AcceptInvite";
 import { Analytics } from "@/pages/analytics/Analytics";
+import { Billing } from "@/pages/billing/Billing";
 import { Connections } from "@/pages/connections/Connections";
 import { Dashboard } from "@/pages/dashboard/Dashboard";
 import { Members } from "@/pages/members/Members";
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/connections" element={<Connections />} />
           <Route path="/members" element={<Members />} />
+          <Route path="/billing" element={<Billing />} />
         </Route>
       </Route>
 

@@ -3,6 +3,7 @@ import { db } from "../../db";
 import { platformConnections, postTargets, posts, type Post } from "../../db/schema";
 import { badRequest, conflict, notFound } from "../../lib/errors";
 import { assertWorkspaceRole } from "../../lib/workspaceAuthz";
+import { assertCanCreatePost } from "../billing/billing.service";
 import {
   assertPublishableMediaUrl,
   isCloudinaryImage,
@@ -95,6 +96,7 @@ async function getDetail(postId: string) {
 
 export const createPost = async (userId: string, input: CreatePostInput) => {
   await assertWorkspaceRole(userId, input.workspaceId, [...EDIT_ROLES]);
+  await assertCanCreatePost(input.workspaceId);
   const targets = input.targets ?? [];
   await assertConnectionsInWorkspace(input.workspaceId, targets);
 
