@@ -134,10 +134,10 @@ export function Members() {
   return (
     <div className="space-y-8">
       <div className="animate-fade-up">
-        <h1 className="font-display text-3xl font-semibold tracking-tight text-white">Team members</h1>
-        <p className="mt-1.5 text-zinc-400">
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Team members</h1>
+        <p className="mt-1.5 text-muted">
           {detail ? `${members.length} member${members.length === 1 ? "" : "s"} in ` : "Managing "}
-          <span className="text-zinc-200">{currentWorkspace.name}</span>
+          <span className="text-ink">{currentWorkspace.name}</span>
         </p>
       </div>
 
@@ -150,16 +150,16 @@ export function Members() {
 
       {/* Invite (owner only) */}
       {isOwner && (
-        <section className="animate-fade-up rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+        <section className="animate-fade-up rounded-2xl border border-line bg-surface p-6">
           <div className="mb-4 flex items-center gap-2">
             <UserPlus className="h-4 w-4 text-violet-300" />
-            <h2 className="font-medium text-zinc-100">Invite a teammate</h2>
+            <h2 className="font-medium text-ink">Invite a teammate</h2>
           </div>
           <form onSubmit={onInvite} className="flex flex-col gap-3 sm:flex-row sm:items-end">
             <div className="flex-1 space-y-2">
               <Label htmlFor="invite-email">Email</Label>
               <div className="relative">
-                <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-zinc-500" />
+                <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-faint" />
                 <Input
                   id="invite-email"
                   type="email"
@@ -194,11 +194,11 @@ export function Members() {
 
           {inviteLink && (
             <div className="mt-4 rounded-xl border border-violet-500/20 bg-violet-500/10 p-4">
-              <p className="text-sm text-zinc-200">
+              <p className="text-sm text-ink">
                 Invitation created. Share this link (email delivery arrives in a later phase):
               </p>
               <div className="mt-2 flex items-center gap-2">
-                <code className="flex-1 truncate rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-xs text-zinc-300">
+                <code className="flex-1 truncate rounded-lg border border-line bg-black/30 px-3 py-2 text-xs text-muted">
                   {inviteLink}
                 </code>
                 <CopyButton value={inviteLink} />
@@ -211,23 +211,23 @@ export function Members() {
       {/* Pending invitations (owner only) */}
       {isOwner && invites.length > 0 && (
         <section className="animate-fade-up">
-          <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-zinc-500">
+          <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-faint">
             Pending invitations
           </h2>
-          <div className="divide-y divide-white/5 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
+          <div className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
             {invites.map((inv) => (
               <div key={inv.id} className="flex items-center gap-3 px-5 py-3.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-muted">
                   <Mail className="h-4 w-4" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm text-zinc-100">{inv.email}</p>
-                  <p className="text-xs text-zinc-500">Expires {formatDate(inv.expiresAt)}</p>
+                  <p className="truncate text-sm text-ink">{inv.email}</p>
+                  <p className="text-xs text-faint">Expires {formatDate(inv.expiresAt)}</p>
                 </div>
                 <RoleBadge role={inv.role} />
                 <button
                   onClick={() => onRevoke(inv.id)}
-                  className="rounded-lg px-2.5 py-1 text-xs font-medium text-zinc-400 transition-colors hover:bg-white/5 hover:text-red-300"
+                  className="rounded-lg px-2.5 py-1 text-xs font-medium text-muted transition-colors hover:bg-surface hover:text-red-300"
                 >
                   Revoke
                 </button>
@@ -239,13 +239,13 @@ export function Members() {
 
       {/* Members list */}
       <section className="animate-fade-up">
-        <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-zinc-500">Members</h2>
+        <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-faint">Members</h2>
         {loading && !detail ? (
-          <div className="flex items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] py-12 text-zinc-500">
+          <div className="flex items-center justify-center rounded-2xl border border-line bg-surface py-12 text-faint">
             <Loader2 className="h-5 w-5 animate-spin" />
           </div>
         ) : (
-          <div className="divide-y divide-white/5 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
+          <div className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
             {members.map((m) => {
               const isSelf = m.userId === user?.id;
               const canManage = isOwner && m.role !== "OWNER";
@@ -257,15 +257,15 @@ export function Members() {
                     {initials(m.user.name)}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="flex items-center gap-2 truncate text-sm font-medium text-zinc-100">
+                    <p className="flex items-center gap-2 truncate text-sm font-medium text-ink">
                       {m.user.name}
                       {isSelf && (
-                        <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-medium text-zinc-400">
+                        <span className="rounded bg-surface-hover px-1.5 py-0.5 text-[10px] font-medium text-muted">
                           You
                         </span>
                       )}
                     </p>
-                    <p className="truncate text-xs text-zinc-500">{m.user.email}</p>
+                    <p className="truncate text-xs text-faint">{m.user.email}</p>
                   </div>
 
                   {canManage ? (
@@ -284,7 +284,7 @@ export function Members() {
                       <button
                         onClick={() => onRemove(m.userId)}
                         disabled={busy}
-                        className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-red-500/10 hover:text-red-300 disabled:opacity-50"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg text-faint transition-colors hover:bg-red-500/10 hover:text-red-300 disabled:opacity-50"
                         aria-label="Remove member"
                       >
                         {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}

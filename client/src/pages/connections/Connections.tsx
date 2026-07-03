@@ -29,7 +29,7 @@ const PLATFORMS: PlatformMeta[] = [
   { key: "YOUTUBE", name: "YouTube", icon: Youtube, color: "text-red-400", enabled: true, blurb: "Upload & publish videos." },
   { key: "INSTAGRAM", name: "Instagram", icon: Instagram, color: "text-pink-400", enabled: false, blurb: "Publish photos to your feed." },
   { key: "LINKEDIN", name: "LinkedIn", icon: Linkedin, color: "text-sky-400", enabled: true, blurb: "Share image posts to your profile." },
-  { key: "X", name: "X", icon: Twitter, color: "text-zinc-300", enabled: true, blurb: "Post tweets (text + image)." },
+  { key: "X", name: "X", icon: Twitter, color: "text-muted", enabled: true, blurb: "Post tweets (text + image)." },
 ];
 
 const META = Object.fromEntries(PLATFORMS.map((p) => [p.key, p])) as Record<Platform, PlatformMeta>;
@@ -138,9 +138,9 @@ export function Connections() {
   return (
     <div className="space-y-8">
       <div className="animate-fade-up">
-        <h1 className="font-display text-3xl font-semibold tracking-tight text-white">Connections</h1>
-        <p className="mt-1.5 text-zinc-400">
-          Link social accounts to <span className="text-zinc-200">{currentWorkspace.name}</span> to publish across platforms.
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Connections</h1>
+        <p className="mt-1.5 text-muted">
+          Link social accounts to <span className="text-ink">{currentWorkspace.name}</span> to publish across platforms.
         </p>
       </div>
 
@@ -159,19 +159,19 @@ export function Connections() {
 
       {/* Connected accounts */}
       <section className="animate-fade-up">
-        <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-zinc-500">
+        <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-faint">
           Connected accounts
         </h2>
         {loading ? (
-          <div className="flex items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] py-12 text-zinc-500">
+          <div className="flex items-center justify-center rounded-2xl border border-line bg-surface py-12 text-faint">
             <Loader2 className="h-5 w-5 animate-spin" />
           </div>
         ) : connections.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/[0.02] py-12 text-center">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-zinc-500">
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-line bg-surface py-12 text-center">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-surface text-faint">
               <Plug className="h-5 w-5" />
             </div>
-            <p className="mt-3 text-sm text-zinc-400">No accounts connected yet.</p>
+            <p className="mt-3 text-sm text-muted">No accounts connected yet.</p>
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
@@ -179,17 +179,17 @@ export function Connections() {
               const meta = META[c.platform];
               const Icon = meta?.icon ?? Plug;
               return (
-                <div key={c.id} className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                <div key={c.id} className="flex items-center gap-4 rounded-2xl border border-line bg-surface p-5">
                   {c.avatarUrl ? (
                     <img src={c.avatarUrl} alt="" className="h-11 w-11 rounded-full object-cover" />
                   ) : (
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5">
-                      <Icon className={`h-5 w-5 ${meta?.color ?? "text-zinc-300"}`} />
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface">
+                      <Icon className={`h-5 w-5 ${meta?.color ?? "text-muted"}`} />
                     </div>
                   )}
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-zinc-100">{c.accountName}</p>
-                    <p className="text-xs text-zinc-500">
+                    <p className="truncate text-sm font-medium text-ink">{c.accountName}</p>
+                    <p className="text-xs text-faint">
                       {meta?.name ?? c.platform} • connected {formatDate(c.connectedAt)}
                     </p>
                   </div>
@@ -212,7 +212,7 @@ export function Connections() {
 
       {/* Available platforms */}
       <section className="animate-fade-up">
-        <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-zinc-500">
+        <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-faint">
           Add a platform
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -220,19 +220,19 @@ export function Connections() {
             const Icon = p.icon;
             const already = connectedPlatforms.has(p.key);
             return (
-              <div key={p.key} className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+              <div key={p.key} className="flex flex-col rounded-2xl border border-line bg-surface p-5">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-surface">
                   <Icon className={`h-5 w-5 ${p.color}`} />
                 </div>
-                <p className="mt-4 font-medium text-zinc-100">{p.name}</p>
-                <p className="mt-1 flex-1 text-sm text-zinc-500">{p.blurb}</p>
+                <p className="mt-4 font-medium text-ink">{p.name}</p>
+                <p className="mt-1 flex-1 text-sm text-faint">{p.blurb}</p>
                 <div className="mt-4">
                   {!p.enabled ? (
-                    <span className="inline-block rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[11px] font-medium text-zinc-400">
+                    <span className="inline-block rounded-full border border-line bg-surface px-2.5 py-0.5 text-[11px] font-medium text-muted">
                       Soon
                     </span>
                   ) : !canManage ? (
-                    <span className="text-xs text-zinc-500">Owners & editors can connect</span>
+                    <span className="text-xs text-faint">Owners & editors can connect</span>
                   ) : (
                     <Button
                       size="sm"

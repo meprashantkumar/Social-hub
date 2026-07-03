@@ -1,10 +1,13 @@
+import { createHash, randomBytes } from "node:crypto";
 import bcrypt from "bcryptjs";
 import { and, eq, gt, isNull } from "drizzle-orm";
 import { env } from "../../config/env";
 import { db } from "../../db";
-import { refreshTokens, users, type User } from "../../db/schema";
-import { conflict, unauthorized } from "../../lib/errors";
-import type { LoginInput, RegisterInput } from "./auth.schemas";
+import { passwordResetTokens, refreshTokens, users, type User } from "../../db/schema";
+import { badRequest, conflict, unauthorized } from "../../lib/errors";
+import { isEmailConfigured, sendPasswordResetEmail } from "../../lib/mailer";
+import { assertPublishableMediaUrl } from "../media/media.service";
+import type { LoginInput, RegisterInput, UpdateProfileInput } from "./auth.schemas";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "./auth.tokens";
 
 const SALT_ROUNDS = 12;
@@ -198,4 +201,110 @@ export const logout = async (token: string | undefined): Promise<void> => {
 export const getUserById = async (userId: string): Promise<PublicUser | null> => {
   const user = await db.query.users.findFirst({ where: eq(users.id, userId) });
   return user ? toPublicUser(user) : null;
+};
+
+// ---------------------------------------------------------------------------
+// Account profile & password management
+// ---------------------------------------------------------------------------
+
+const RESET_TOKEN_TTL_MS = 30 * 60 * 1000; // 30 minutes
+const hashResetToken = (raw: string): string => createHash("sha256").update(raw).digest("hex");
+
+/** Update the signed-in user's display name and/or avatar. */
+export const updateProfile = async (
+  userId: string,
+  input: UpdateProfileInput
+): Promise<PublicUser> => {
+  const patch: Partial<Pick<User, "name" | "avatarUrl" | "updatedAt">> = { updatedAt: new Date() };
+  if (input.name !== undefined) patch.name = input.name;
+  if (input.avatarUrl !== undefined) {
+    // Only allow clearing it, or setting a Cloudinary image we actually hosted —
+    // this prevents storing an arbitrary/attacker-controlled URL as an avatar.
+    if (input.avatarUrl !== null) assertPublishableMediaUrl(input.avatarUrl);
+    patch.avatarUrl = input.avatarUrl;
+  }
+
+  const [user] = await db.update(users).set(patch).where(eq(users.id, userId)).returning();
+  if (!user) throw unauthorized("User no longer exists", "USER_NOT_FOUND");
+  return toPublicUser(user);
+};
+
+/** Change the signed-in user's password after verifying the current one. */
+export const changePassword = async (
+  userId: string,
+  currentPassword: string,
+  newPassword: string
+): Promise<void> => {
+  const user = await db.query.users.findFirst({ where: eq(users.id, userId) });
+  if (!user) throw unauthorized("User no longer exists", "USER_NOT_FOUND");
+
+  const ok = await bcrypt.compare(currentPassword, user.password);
+  if (!ok) throw unauthorized("Current password is incorrect", "INVALID_PASSWORD");
+
+  const passwordHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
+  await db.update(users).set({ password: passwordHash, updatedAt: new Date() }).where(eq(users.id, userId));
+};
+
+/**
+ * Begin a password reset: mint a single-use token, email the reset link, and
+ * ALWAYS resolve without revealing whether the email belongs to an account
+ * (prevents user enumeration).
+ */
+export const requestPasswordReset = async (email: string): Promise<void> => {
+  const user = await db.query.users.findFirst({ where: eq(users.email, email) });
+  if (!user) return;
+
+  // Retire any prior unused tokens for this user before issuing a fresh one.
+  await db
+    .update(passwordResetTokens)
+    .set({ usedAt: new Date() })
+    .where(and(eq(passwordResetTokens.userId, user.id), isNull(passwordResetTokens.usedAt)));
+
+  const rawToken = randomBytes(32).toString("base64url");
+  await db.insert(passwordResetTokens).values({
+    userId: user.id,
+    tokenHash: hashResetToken(rawToken),
+    expiresAt: new Date(Date.now() + RESET_TOKEN_TTL_MS),
+  });
+
+  const resetUrl = `${env.CLIENT_ORIGIN}/reset-password?token=${rawToken}`;
+  if (isEmailConfigured()) {
+    await sendPasswordResetEmail(user.email, resetUrl);
+  } else {
+    // Dev convenience when SMTP isn't set up — never do this with real mail configured.
+    console.warn(`[auth] Email not configured — password reset link: ${resetUrl}`);
+  }
+};
+
+/** Complete a password reset using a raw token from the emailed link. */
+export const resetPassword = async (rawToken: string, newPassword: string): Promise<void> => {
+  const now = new Date();
+
+  // Atomically claim the token: only an unused, unexpired row matches, and the
+  // row-lock guarantees a token is redeemable at most once.
+  const [claimed] = await db
+    .update(passwordResetTokens)
+    .set({ usedAt: now })
+    .where(
+      and(
+        eq(passwordResetTokens.tokenHash, hashResetToken(rawToken)),
+        isNull(passwordResetTokens.usedAt),
+        gt(passwordResetTokens.expiresAt, now)
+      )
+    )
+    .returning();
+
+  if (!claimed) throw badRequest("This reset link is invalid or has expired", "INVALID_RESET_TOKEN");
+
+  const passwordHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
+  await db
+    .update(users)
+    .set({ password: passwordHash, updatedAt: now })
+    .where(eq(users.id, claimed.userId));
+
+  // A password reset should sign the user out everywhere.
+  await db
+    .update(refreshTokens)
+    .set({ revokedAt: now })
+    .where(and(eq(refreshTokens.userId, claimed.userId), isNull(refreshTokens.revokedAt)));
 };

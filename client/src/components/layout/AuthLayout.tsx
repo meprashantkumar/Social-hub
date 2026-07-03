@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { CalendarClock, Share2, Users2 } from "lucide-react";
 import { GridBackground } from "@/components/shared/GridBackground";
 import { Logo } from "@/components/shared/Logo";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 
 const FEATURES = [
   { icon: Share2, title: "Publish once, everywhere", desc: "YouTube, Instagram, LinkedIn & X from a single composer." },
@@ -13,6 +14,9 @@ export function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-screen">
       <GridBackground />
+      <div className="absolute right-5 top-5 z-10 sm:right-8 sm:top-6">
+        <ThemeToggle />
+      </div>
       <div className="mx-auto grid min-h-screen max-w-7xl lg:grid-cols-2">
         {/* Brand showcase (desktop) */}
         <div className="relative hidden flex-col justify-between p-12 xl:p-16 lg:flex">
@@ -20,18 +24,18 @@ export function AuthLayout({ children }: { children: ReactNode }) {
 
           <div className="animate-fade-up space-y-8">
             <div className="space-y-5">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-zinc-400">
+              <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted">
                 <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
                 Social media, minus the chaos
               </div>
-              <h1 className="font-display text-5xl font-semibold leading-[1.05] tracking-tight text-white">
+              <h1 className="font-display text-5xl font-semibold leading-[1.05] tracking-tight text-ink">
                 Publish everywhere.
                 <br />
                 <span className="bg-gradient-to-r from-violet-400 via-indigo-300 to-fuchsia-400 bg-clip-text text-transparent">
                   Manage in one place.
                 </span>
               </h1>
-              <p className="max-w-md text-[15px] leading-relaxed text-zinc-400">
+              <p className="max-w-md text-[15px] leading-relaxed text-muted">
                 Connect every channel, schedule content once, and collaborate with your
                 team — without juggling a dozen tabs.
               </p>
@@ -40,19 +44,29 @@ export function AuthLayout({ children }: { children: ReactNode }) {
             <ul className="space-y-4">
               {FEATURES.map(({ icon: Icon, title, desc }) => (
                 <li key={title} className="flex items-start gap-3.5">
-                  <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-violet-300">
+                  <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line bg-surface text-violet-300">
                     <Icon className="h-[18px] w-[18px]" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-zinc-100">{title}</p>
-                    <p className="text-sm text-zinc-500">{desc}</p>
+                    <p className="text-sm font-medium text-ink">{title}</p>
+                    <p className="text-sm text-faint">{desc}</p>
                   </div>
                 </li>
               ))}
             </ul>
           </div>
 
-          <p className="text-xs text-zinc-600">© 2026 SocialHub. All rights reserved.</p>
+          <p className="text-xs text-faint">
+            © 2026 SocialHub · Built by{" "}
+            <a
+              href="https://github.com/meprashantkumar"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-muted transition-colors hover:text-ink"
+            >
+              Prashant Kumar Chaturvedi
+            </a>
+          </p>
         </div>
 
         {/* Form panel */}

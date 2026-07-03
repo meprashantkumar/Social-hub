@@ -18,3 +18,6 @@ mediaRouter.post(
   requireWorkspaceRole("OWNER", "EDITOR"),
   asyncHandler(ctrl.sign)
 );
+
+// Sign an avatar upload for the signed-in user (no workspace context needed).
+mediaRouter.post("/avatar/sign", requireAuth, asyncHandler(ctrl.signAvatar));

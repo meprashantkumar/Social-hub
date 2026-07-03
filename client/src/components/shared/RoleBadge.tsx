@@ -5,7 +5,7 @@ const STYLES: Record<Role, string> = {
   OWNER: "border-violet-500/30 bg-violet-500/10 text-violet-300",
   EDITOR: "border-sky-500/30 bg-sky-500/10 text-sky-300",
   REVIEWER: "border-amber-500/30 bg-amber-500/10 text-amber-300",
-  VIEWER: "border-white/15 bg-white/5 text-zinc-400",
+  VIEWER: "border-line bg-surface text-muted",
 };
 
 export function RoleBadge({ role, className }: { role: Role; className?: string }) {

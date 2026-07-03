@@ -55,3 +55,24 @@ export const me = async (req: Request, res: Response): Promise<void> => {
   if (!user) throw notFound("User not found", "USER_NOT_FOUND");
   res.json({ user });
 };
+
+export const updateMe = async (req: Request, res: Response): Promise<void> => {
+  const user = await authService.updateProfile(req.userId!, req.body);
+  res.json({ user });
+};
+
+export const changePassword = async (req: Request, res: Response): Promise<void> => {
+  await authService.changePassword(req.userId!, req.body.currentPassword, req.body.newPassword);
+  res.status(204).send();
+};
+
+export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
+  await authService.requestPasswordReset(req.body.email);
+  // Always generic — never reveal whether the email is registered.
+  res.json({ ok: true });
+};
+
+export const resetPassword = async (req: Request, res: Response): Promise<void> => {
+  await authService.resetPassword(req.body.token, req.body.password);
+  res.json({ ok: true });
+};

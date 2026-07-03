@@ -4,8 +4,20 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="color-scheme" content="dark light" />
     <title>SocialHub — Publish everywhere, manage in one place</title>
+    <!-- Apply the saved theme before first paint to avoid a flash of the wrong theme. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("socialhub.theme");
+          if (t !== "light" && t !== "dark") t = "dark";
+          var r = document.documentElement;
+          r.classList.remove("light", "dark");
+          r.classList.add(t);
+        } catch (e) {}
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

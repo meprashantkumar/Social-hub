@@ -19,12 +19,12 @@ import { formatCount, formatDate } from "@/lib/utils";
 
 function StatCard({ icon: Icon, label, value }: { icon: LucideIcon; label: string; value: number }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-      <div className="flex items-center gap-2 text-zinc-400">
+    <div className="rounded-2xl border border-line bg-surface p-5">
+      <div className="flex items-center gap-2 text-muted">
         <Icon className="h-4 w-4" />
         <span className="text-xs font-medium uppercase tracking-wider">{label}</span>
       </div>
-      <p className="mt-2 font-display text-3xl font-semibold text-white" title={value.toLocaleString()}>
+      <p className="mt-2 font-display text-3xl font-semibold text-ink" title={value.toLocaleString()}>
         {formatCount(value)}
       </p>
     </div>
@@ -67,9 +67,9 @@ export function Analytics() {
     <div className="space-y-8">
       <div className="animate-fade-up flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-white">Analytics</h1>
-          <p className="mt-1.5 text-zinc-400">
-            Live performance of published posts in <span className="text-zinc-200">{currentWorkspace.name}</span>.
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Analytics</h1>
+          <p className="mt-1.5 text-muted">
+            Live performance of published posts in <span className="text-ink">{currentWorkspace.name}</span>.
           </p>
         </div>
         <Button variant="outline" size="sm" loading={refreshing} onClick={() => load(true)}>
@@ -85,15 +85,15 @@ export function Analytics() {
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] py-16 text-zinc-500">
+        <div className="flex items-center justify-center rounded-2xl border border-line bg-surface py-16 text-faint">
           <Loader2 className="h-5 w-5 animate-spin" />
         </div>
       ) : !data || data.totals.posts === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/[0.02] py-16 text-center">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-zinc-500">
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-line bg-surface py-16 text-center">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-surface text-faint">
             <BarChart3 className="h-5 w-5" />
           </div>
-          <p className="mt-3 text-sm text-zinc-400">No published posts yet.</p>
+          <p className="mt-3 text-sm text-muted">No published posts yet.</p>
           <Link to="/posts" className="mt-4">
             <Button variant="outline" size="sm">Go to posts</Button>
           </Link>
@@ -110,42 +110,42 @@ export function Analytics() {
 
           {/* Per-post breakdown */}
           <section className="animate-fade-up space-y-3">
-            <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Published posts</h2>
+            <h2 className="text-sm font-medium uppercase tracking-wider text-faint">Published posts</h2>
             <div className="space-y-3">
               {data.posts.map((p) => (
-                <div key={p.postId} className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                <div key={p.postId} className="rounded-2xl border border-line bg-surface p-5">
                   <div className="flex items-center justify-between gap-3">
-                    <Link to={`/posts/${p.postId}`} className="truncate text-sm font-medium text-zinc-100 hover:text-white">
+                    <Link to={`/posts/${p.postId}`} className="truncate text-sm font-medium text-ink hover:text-ink">
                       {p.title || "Untitled post"}
                     </Link>
                     {p.publishedAt && (
-                      <span className="shrink-0 text-xs text-zinc-500">{formatDate(p.publishedAt)}</span>
+                      <span className="shrink-0 text-xs text-faint">{formatDate(p.publishedAt)}</span>
                     )}
                   </div>
                   <div className="mt-4 space-y-2">
                     {p.targets.map((t) => (
                       <div
                         key={t.connectionId}
-                        className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 text-sm"
+                        className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-xl border border-line bg-surface px-4 py-3 text-sm"
                       >
                         <div className="flex min-w-0 items-center gap-2">
                           <PlatformIcon platform={t.platform} />
-                          <span className="truncate text-zinc-200">{t.accountName}</span>
+                          <span className="truncate text-ink">{t.accountName}</span>
                         </div>
                         {t.error ? (
                           <span className="flex items-center gap-1.5 text-xs text-amber-300">
                             <AlertCircle className="h-3.5 w-3.5" /> {t.error}
                           </span>
                         ) : (
-                          <div className="flex items-center gap-5 text-zinc-300">
+                          <div className="flex items-center gap-5 text-muted">
                             <span className="flex items-center gap-1.5" title="Views">
-                              <Eye className="h-4 w-4 text-zinc-500" /> {formatCount(t.views)}
+                              <Eye className="h-4 w-4 text-faint" /> {formatCount(t.views)}
                             </span>
                             <span className="flex items-center gap-1.5" title="Likes">
-                              <ThumbsUp className="h-4 w-4 text-zinc-500" /> {formatCount(t.likes)}
+                              <ThumbsUp className="h-4 w-4 text-faint" /> {formatCount(t.likes)}
                             </span>
                             <span className="flex items-center gap-1.5" title="Comments">
-                              <MessageCircle className="h-4 w-4 text-zinc-500" /> {formatCount(t.comments)}
+                              <MessageCircle className="h-4 w-4 text-faint" /> {formatCount(t.comments)}
                             </span>
                           </div>
                         )}

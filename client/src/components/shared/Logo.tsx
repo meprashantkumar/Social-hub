@@ -9,7 +9,7 @@ export function Logo({ className, showText = true }: { className?: string; showT
         <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/20" />
       </div>
       {showText && (
-        <span className="font-display text-lg font-semibold tracking-tight text-white">
+        <span className="font-display text-lg font-semibold tracking-tight text-ink">
           Social<span className="text-violet-400">Hub</span>
         </span>
       )}

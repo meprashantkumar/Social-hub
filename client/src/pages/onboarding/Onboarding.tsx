@@ -12,14 +12,14 @@ export function Onboarding() {
           <Logo />
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 shadow-2xl shadow-black/30">
-          <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-violet-300">
+        <div className="rounded-2xl border border-line bg-surface p-8 shadow-2xl shadow-black/30">
+          <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-surface text-violet-300">
             <Sparkles className="h-5 w-5" />
           </div>
-          <h1 className="font-display text-2xl font-semibold tracking-tight text-white">
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-ink">
             Create your first workspace
           </h1>
-          <p className="mb-6 mt-2 text-sm text-zinc-400">
+          <p className="mb-6 mt-2 text-sm text-muted">
             A workspace is where your team's connected accounts, posts, and analytics live.
             You can invite teammates once it's set up.
           </p>

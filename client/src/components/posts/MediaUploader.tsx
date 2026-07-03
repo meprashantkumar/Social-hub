@@ -71,15 +71,15 @@ export function MediaUploader({ workspaceId, value, onChange, disabled }: Props)
   if (value && !uploading) {
     return (
       <div className="space-y-3">
-        <div className="overflow-hidden rounded-xl border border-white/10 bg-black/40">
+        <div className="overflow-hidden rounded-xl border border-line bg-black/40">
           {isVideoUrl(value) ? (
             <video src={value} controls className="max-h-72 w-full bg-black object-contain" />
           ) : isImageUrl(value) ? (
             <img src={value} alt="Post media" className="max-h-72 w-full bg-black object-contain" />
           ) : (
-            <div className="flex items-center gap-3 p-4 text-sm text-zinc-300">
-              <Link2 className="h-4 w-4 shrink-0 text-zinc-500" />
-              <a href={value} target="_blank" rel="noreferrer" className="truncate hover:text-white">
+            <div className="flex items-center gap-3 p-4 text-sm text-muted">
+              <Link2 className="h-4 w-4 shrink-0 text-faint" />
+              <a href={value} target="_blank" rel="noreferrer" className="truncate hover:text-ink">
                 {value}
               </a>
             </div>
@@ -124,11 +124,11 @@ export function MediaUploader({ workspaceId, value, onChange, disabled }: Props)
   if (uploading) {
     return (
       <div className="rounded-xl border border-violet-500/30 bg-violet-500/[0.06] p-6">
-        <div className="flex items-center gap-3 text-sm text-zinc-200">
+        <div className="flex items-center gap-3 text-sm text-ink">
           <Loader2 className="h-4 w-4 animate-spin text-violet-300" />
           Uploading… {progress}%
         </div>
-        <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+        <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-surface-hover">
           <div
             className="h-full rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 transition-all duration-200"
             style={{ width: `${progress}%` }}
@@ -160,18 +160,18 @@ export function MediaUploader({ workspaceId, value, onChange, disabled }: Props)
         className={cn(
           "flex flex-col items-center justify-center rounded-xl border border-dashed px-6 py-10 text-center transition-colors",
           disabled
-            ? "cursor-not-allowed border-white/10 bg-white/[0.02] opacity-60"
-            : "cursor-pointer border-white/15 bg-white/[0.02] hover:border-violet-500/40 hover:bg-violet-500/[0.04]",
+            ? "cursor-not-allowed border-line bg-surface opacity-60"
+            : "cursor-pointer border-line bg-surface hover:border-violet-500/40 hover:bg-violet-500/[0.04]",
           dragging && "border-violet-500/60 bg-violet-500/[0.08]"
         )}
       >
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-zinc-400">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-surface text-muted">
           <UploadCloud className="h-6 w-6" />
         </div>
-        <p className="mt-3 text-sm font-medium text-zinc-200">
+        <p className="mt-3 text-sm font-medium text-ink">
           {dragging ? "Drop to upload" : "Drag & drop, or click to upload"}
         </p>
-        <p className="mt-1 flex items-center gap-2 text-xs text-zinc-500">
+        <p className="mt-1 flex items-center gap-2 text-xs text-faint">
           <ImageIcon className="h-3.5 w-3.5" /> Images
           <Film className="h-3.5 w-3.5" /> Videos
           <span>· up to {formatBytes(MAX_UPLOAD_BYTES)}</span>
@@ -213,7 +213,7 @@ export function MediaUploader({ workspaceId, value, onChange, disabled }: Props)
           <button
             type="button"
             onClick={() => setShowLink(true)}
-            className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-300"
+            className="inline-flex items-center gap-1.5 text-xs text-faint hover:text-muted"
           >
             <Link2 className="h-3.5 w-3.5" /> or paste a link
           </button>

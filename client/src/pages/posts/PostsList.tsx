@@ -51,9 +51,9 @@ export function PostsList() {
     <div className="space-y-6">
       <div className="animate-fade-up flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-white">Posts</h1>
-          <p className="mt-1.5 text-zinc-400">
-            Compose once, target multiple platforms in <span className="text-zinc-200">{currentWorkspace.name}</span>.
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Posts</h1>
+          <p className="mt-1.5 text-muted">
+            Compose once, target multiple platforms in <span className="text-ink">{currentWorkspace.name}</span>.
           </p>
         </div>
         {canCreate && (
@@ -75,7 +75,7 @@ export function PostsList() {
               "rounded-full border px-3 py-1 text-sm font-medium transition-colors",
               filter === f.key
                 ? "border-violet-500/40 bg-violet-500/15 text-violet-200"
-                : "border-white/10 bg-white/[0.03] text-zinc-400 hover:bg-white/[0.07]"
+                : "border-line bg-surface text-muted hover:bg-surface-hover"
             )}
           >
             {f.label}
@@ -91,15 +91,15 @@ export function PostsList() {
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] py-16 text-zinc-500">
+        <div className="flex items-center justify-center rounded-2xl border border-line bg-surface py-16 text-faint">
           <Loader2 className="h-5 w-5 animate-spin" />
         </div>
       ) : posts.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/[0.02] py-16 text-center">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-zinc-500">
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-line bg-surface py-16 text-center">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-surface text-faint">
             <FileText className="h-5 w-5" />
           </div>
-          <p className="mt-3 text-sm text-zinc-400">
+          <p className="mt-3 text-sm text-muted">
             {filter ? "No posts with this status." : "No posts yet."}
           </p>
           {canCreate && !filter && (
@@ -111,16 +111,16 @@ export function PostsList() {
           )}
         </div>
       ) : (
-        <div className="animate-fade-up divide-y divide-white/5 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
+        <div className="animate-fade-up divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
           {posts.map((p) => (
             <Link
               key={p.id}
               to={`/posts/${p.id}`}
-              className="flex items-center gap-4 px-5 py-4 transition-colors hover:bg-white/[0.03]"
+              className="flex items-center gap-4 px-5 py-4 transition-colors hover:bg-surface"
             >
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-zinc-100">{p.title || "Untitled post"}</p>
-                <p className="mt-0.5 text-xs text-zinc-500">
+                <p className="truncate text-sm font-medium text-ink">{p.title || "Untitled post"}</p>
+                <p className="mt-0.5 text-xs text-faint">
                   {p.targetCount} target{p.targetCount === 1 ? "" : "s"} • updated {formatDate(p.updatedAt)}
                 </p>
               </div>

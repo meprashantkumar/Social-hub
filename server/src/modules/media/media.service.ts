@@ -30,13 +30,12 @@ export function isConfigured(): boolean {
  * with the api_secret appended. We only sign `folder` + `timestamp`, so the
  * client must send exactly those (plus file/api_key) and nothing else signed.
  */
-export function signUpload(workspaceId: string): UploadSignature {
+function signForFolder(folder: string): UploadSignature {
   if (!isConfigured()) {
     throw new AppError(501, "Media uploads are not configured on the server", "MEDIA_NOT_CONFIGURED");
   }
 
   const timestamp = Math.floor(Date.now() / 1000);
-  const folder = `socialhub/${workspaceId}`;
 
   const paramsToSign: Record<string, string | number> = { folder, timestamp };
   const canonical = Object.keys(paramsToSign)
@@ -55,6 +54,16 @@ export function signUpload(workspaceId: string): UploadSignature {
     folder,
     signature,
   };
+}
+
+/** Signed payload for a workspace media upload (posts). */
+export function signUpload(workspaceId: string): UploadSignature {
+  return signForFolder(`socialhub/${workspaceId}`);
+}
+
+/** Signed payload for the signed-in user's profile-picture upload. */
+export function signAvatarUpload(userId: string): UploadSignature {
+  return signForFolder(`socialhub/avatars/${userId}`);
 }
 
 /**

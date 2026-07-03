@@ -114,8 +114,8 @@ export function Billing() {
   return (
     <div className="space-y-8">
       <div className="animate-fade-up">
-        <h1 className="font-display text-3xl font-semibold tracking-tight text-white">Billing</h1>
-        <p className="mt-1.5 text-zinc-400">Upgrade to Pro to lift the Free-plan limits.</p>
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Billing</h1>
+        <p className="mt-1.5 text-muted">Upgrade to Pro to lift the Free-plan limits.</p>
       </div>
 
       {success && (
@@ -132,26 +132,26 @@ export function Billing() {
       )}
 
       {loading || !data ? (
-        <div className="flex items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] py-16 text-zinc-500">
+        <div className="flex items-center justify-center rounded-2xl border border-line bg-surface py-16 text-faint">
           <Loader2 className="h-5 w-5 animate-spin" />
         </div>
       ) : (
         <>
           {/* Current plan */}
-          <section className="animate-fade-up rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+          <section className="animate-fade-up rounded-2xl border border-line bg-surface p-6">
             <div className="flex items-center gap-3">
               <div
                 className={`flex h-11 w-11 items-center justify-center rounded-xl border ${
-                  isPro ? "border-amber-400/30 bg-amber-400/10 text-amber-300" : "border-white/10 bg-white/5 text-zinc-400"
+                  isPro ? "border-amber-400/30 bg-amber-400/10 text-amber-300" : "border-line bg-surface text-muted"
                 }`}
               >
                 <Crown className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm font-medium text-zinc-100">
-                  You're on the <span className={isPro ? "text-amber-300" : "text-zinc-200"}>{isPro ? "Pro" : "Free"}</span> plan
+                <p className="text-sm font-medium text-ink">
+                  You're on the <span className={isPro ? "text-amber-300" : "text-ink"}>{isPro ? "Pro" : "Free"}</span> plan
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-faint">
                   {isPro && data.proExpiresAt
                     ? `Pro access until ${formatDate(data.proExpiresAt)}`
                     : `Free plan: ${data.limits.workspaces} workspace, ${data.limits.members} members, ${data.limits.posts} posts per workspace`}
@@ -162,7 +162,7 @@ export function Billing() {
 
           {/* Plans */}
           <section className="animate-fade-up">
-            <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-zinc-500">
+            <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-faint">
               {isPro ? "Extend Pro" : "Upgrade to Pro"}
             </h2>
             <div className="grid gap-4 sm:grid-cols-3">
@@ -172,7 +172,7 @@ export function Billing() {
                   <div
                     key={p.id}
                     className={`flex flex-col rounded-2xl border p-6 ${
-                      highlight ? "border-violet-500/40 bg-violet-500/[0.06]" : "border-white/10 bg-white/[0.03]"
+                      highlight ? "border-violet-500/40 bg-violet-500/[0.06]" : "border-line bg-surface"
                     }`}
                   >
                     {highlight && (
@@ -180,11 +180,11 @@ export function Billing() {
                         <Sparkles className="h-3 w-3" /> Best value
                       </span>
                     )}
-                    <p className="font-display text-lg font-semibold text-white">{p.label}</p>
-                    <p className="mt-1 text-2xl font-semibold text-zinc-100">
+                    <p className="font-display text-lg font-semibold text-ink">{p.label}</p>
+                    <p className="mt-1 text-2xl font-semibold text-ink">
                       ₹{(p.amount / 100).toLocaleString("en-IN")}
                     </p>
-                    <p className="text-xs text-zinc-500">{p.priceLabel}</p>
+                    <p className="text-xs text-faint">{p.priceLabel}</p>
                     <Button
                       className="mt-5 w-full"
                       variant={highlight ? "primary" : "outline"}
@@ -201,12 +201,12 @@ export function Billing() {
 
           {/* What you get */}
           <section className="animate-fade-up grid gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-              <p className="text-sm font-medium text-zinc-300">Free</p>
+            <div className="rounded-2xl border border-line bg-surface p-6">
+              <p className="text-sm font-medium text-muted">Free</p>
               <ul className="mt-3 space-y-2">
                 {FREE_FEATURES.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-zinc-400">
-                    <Check className="h-4 w-4 shrink-0 text-zinc-500" /> {f}
+                  <li key={f} className="flex items-center gap-2 text-sm text-muted">
+                    <Check className="h-4 w-4 shrink-0 text-faint" /> {f}
                   </li>
                 ))}
               </ul>
@@ -217,7 +217,7 @@ export function Billing() {
               </p>
               <ul className="mt-3 space-y-2">
                 {PRO_FEATURES.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-zinc-300">
+                  <li key={f} className="flex items-center gap-2 text-sm text-muted">
                     <Check className="h-4 w-4 shrink-0 text-violet-400" /> {f}
                   </li>
                 ))}
@@ -225,7 +225,7 @@ export function Billing() {
             </div>
           </section>
 
-          <p className="text-center text-xs text-zinc-600">
+          <p className="text-center text-xs text-faint">
             Test mode — use Razorpay's test cards (e.g. 4111 1111 1111 1111, any future expiry &amp; CVV).
           </p>
         </>

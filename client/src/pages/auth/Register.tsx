@@ -32,10 +32,10 @@ export function Register() {
   return (
     <AuthLayout>
       <div className="mb-8">
-        <h2 className="font-display text-3xl font-semibold tracking-tight text-white">
+        <h2 className="font-display text-3xl font-semibold tracking-tight text-ink">
           Create your account
         </h2>
-        <p className="mt-2 text-sm text-zinc-400">
+        <p className="mt-2 text-sm text-muted">
           Start publishing across every platform in minutes.
         </p>
       </div>
@@ -88,7 +88,7 @@ export function Register() {
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:text-zinc-200"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-faint transition-colors hover:text-ink"
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 tabIndex={-1}
               >
@@ -96,7 +96,7 @@ export function Register() {
               </button>
             }
           />
-          <p className="pl-1 text-xs text-zinc-500">Use 8 or more characters.</p>
+          <p className="pl-1 text-xs text-faint">Use 8 or more characters.</p>
         </div>
 
         <Button type="submit" size="lg" loading={loading} className="w-full">
@@ -109,7 +109,7 @@ export function Register() {
         </Button>
       </form>
 
-      <p className="mt-8 text-center text-sm text-zinc-400">
+      <p className="mt-8 text-center text-sm text-muted">
         Already have an account?{" "}
         <Link
           to="/login"

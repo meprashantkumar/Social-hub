@@ -20,7 +20,7 @@ export function CopyButton({ value, className }: { value: string; className?: st
       type="button"
       onClick={copy}
       className={cn(
-        "inline-flex h-8 items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/10",
+        "inline-flex h-8 items-center gap-1.5 rounded-lg border border-line bg-surface px-2.5 text-xs font-medium text-muted transition-colors hover:bg-surface-hover",
         className
       )}
     >

@@ -179,6 +179,14 @@ export const authApi = {
   refresh: () => request<AuthResponse>("/auth/refresh", { method: "POST" }),
   logout: () => request<void>("/auth/logout", { method: "POST" }),
   me: () => request<{ user: User }>("/auth/me"),
+  updateProfile: (data: { name?: string; avatarUrl?: string | null }) =>
+    request<{ user: User }>("/auth/me", { method: "PATCH", body: data }),
+  changePassword: (data: { currentPassword: string; newPassword: string }) =>
+    request<void>("/auth/change-password", { method: "POST", body: data }),
+  forgotPassword: (email: string) =>
+    request<{ ok: boolean }>("/auth/forgot-password", { method: "POST", body: { email } }),
+  resetPassword: (token: string, password: string) =>
+    request<{ ok: boolean }>("/auth/reset-password", { method: "POST", body: { token, password } }),
 };
 
 export const workspaceApi = {
@@ -301,6 +309,8 @@ export const mediaApi = {
     request<UploadSignature>(`/media/sign?workspaceId=${encodeURIComponent(workspaceId)}`, {
       method: "POST",
     }),
+  /** Get a signed payload to upload the current user's avatar to Cloudinary. */
+  signAvatarUpload: () => request<UploadSignature>("/media/avatar/sign", { method: "POST" }),
 };
 
 export const connectionsApi = {

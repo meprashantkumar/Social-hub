@@ -16,7 +16,7 @@ function Shell({ children }: { children: React.ReactNode }) {
         <div className="mb-8 flex justify-center">
           <Logo />
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 shadow-2xl shadow-black/30">
+        <div className="rounded-2xl border border-line bg-surface p-8 shadow-2xl shadow-black/30">
           {children}
         </div>
       </div>
@@ -66,7 +66,7 @@ export function AcceptInvite() {
   if (loading) {
     return (
       <Shell>
-        <div className="flex items-center justify-center py-8 text-zinc-500">
+        <div className="flex items-center justify-center py-8 text-faint">
           <Loader2 className="h-5 w-5 animate-spin" />
         </div>
       </Shell>
@@ -79,8 +79,8 @@ export function AcceptInvite() {
         <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/10 text-red-300">
           <MailWarning className="h-5 w-5" />
         </div>
-        <h1 className="mt-5 font-display text-2xl font-semibold text-white">Invitation not found</h1>
-        <p className="mt-2 text-sm text-zinc-400">{loadError ?? "This invitation link is invalid."}</p>
+        <h1 className="mt-5 font-display text-2xl font-semibold text-ink">Invitation not found</h1>
+        <p className="mt-2 text-sm text-muted">{loadError ?? "This invitation link is invalid."}</p>
         <Link to="/dashboard" className="mt-6 inline-block">
           <Button variant="outline">Go to dashboard</Button>
         </Link>
@@ -97,11 +97,11 @@ export function AcceptInvite() {
           : "This invitation is no longer valid.";
     return (
       <Shell>
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-zinc-400">
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-surface text-muted">
           <MailWarning className="h-5 w-5" />
         </div>
-        <h1 className="mt-5 font-display text-2xl font-semibold text-white">Can't accept this invite</h1>
-        <p className="mt-2 text-sm text-zinc-400">{reason}</p>
+        <h1 className="mt-5 font-display text-2xl font-semibold text-ink">Can't accept this invite</h1>
+        <p className="mt-2 text-sm text-muted">{reason}</p>
         <Link to="/dashboard" className="mt-6 inline-block">
           <Button variant="outline">Go to dashboard</Button>
         </Link>
@@ -113,11 +113,11 @@ export function AcceptInvite() {
 
   return (
     <Shell>
-      <p className="text-sm text-zinc-400">You've been invited to join</p>
-      <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight text-white">
+      <p className="text-sm text-muted">You've been invited to join</p>
+      <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
         {preview.workspace.name}
       </h1>
-      <div className="mt-3 inline-flex items-center gap-2 text-sm text-zinc-400">
+      <div className="mt-3 inline-flex items-center gap-2 text-sm text-muted">
         as <RoleBadge role={preview.role} />
       </div>
 
@@ -130,7 +130,7 @@ export function AcceptInvite() {
 
       <div className="mt-6">
         {status === "loading" ? (
-          <div className="flex items-center justify-center py-2 text-zinc-500">
+          <div className="flex items-center justify-center py-2 text-faint">
             <Loader2 className="h-5 w-5 animate-spin" />
           </div>
         ) : status === "authenticated" ? (
@@ -149,7 +149,7 @@ export function AcceptInvite() {
                 Sign in to accept <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-            <p className="text-center text-sm text-zinc-400">
+            <p className="text-center text-sm text-muted">
               New here?{" "}
               <Link
                 to={`/register?next=${encodeURIComponent(nextUrl)}`}

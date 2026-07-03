@@ -6,7 +6,7 @@ const META: Record<Platform, { icon: LucideIcon; color: string; label: string }>
   YOUTUBE: { icon: Youtube, color: "text-red-400", label: "YouTube" },
   INSTAGRAM: { icon: Instagram, color: "text-pink-400", label: "Instagram" },
   LINKEDIN: { icon: Linkedin, color: "text-sky-400", label: "LinkedIn" },
-  X: { icon: Twitter, color: "text-zinc-300", label: "X" },
+  X: { icon: Twitter, color: "text-muted", label: "X" },
 };
 
 export const platformLabel = (p: Platform) => META[p]?.label ?? p;

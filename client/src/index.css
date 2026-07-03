@@ -1,12 +1,80 @@
 @import "tailwindcss";
 
+/* Toggle dark mode via a `.dark` class on <html> (set by the theme provider). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: "Space Grotesk", "Inter", ui-sans-serif, sans-serif;
 }
 
-:root {
+/* Semantic color tokens — utilities (bg-canvas, text-ink, border-line, …) resolve
+   to CSS vars at runtime, so flipping the theme class re-themes the whole app. */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-panel: var(--panel);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+}
+
+/* Dark theme (default) — values match the original design exactly, so dark mode
+   is visually unchanged from before the theme system was introduced. */
+:root,
+.dark {
   color-scheme: dark;
+  --canvas: #09090b;
+  --panel: #18181b;
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-hover: rgba(255, 255, 255, 0.07);
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --ink: #f4f4f5;
+  --muted: #a1a1aa;
+  --faint: #71717a;
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --scroll-thumb: rgba(255, 255, 255, 0.08);
+  --scroll-thumb-hover: rgba(255, 255, 255, 0.16);
+}
+
+/* Light theme — clean, modern, professional. Text tokens are kept dark for strong
+   contrast on the near-white canvas. */
+.light {
+  color-scheme: light;
+  --canvas: #f4f4f6;
+  --panel: #ffffff;
+  --surface: rgba(24, 24, 27, 0.035);
+  --surface-hover: rgba(24, 24, 27, 0.07);
+  --line: rgba(24, 24, 27, 0.12);
+  --line-strong: rgba(24, 24, 27, 0.22);
+  --ink: #18181b;
+  --muted: #3f3f46; /* zinc-700 — readable secondary text */
+  --faint: #52525b; /* zinc-600 — readable tertiary text */
+  --grid-line: rgba(24, 24, 27, 0.055);
+  --scroll-thumb: rgba(24, 24, 27, 0.16);
+  --scroll-thumb-hover: rgba(24, 24, 27, 0.28);
+}
+
+/* Pale accent text (chosen for dark backgrounds) is too faint on the light canvas.
+   Darken those specific shades in light mode so badges/pills stay readable. */
+.light :is(.text-violet-200, .text-violet-300, .text-violet-400) {
+  color: #6d28d9; /* violet-700 */
+}
+.light :is(.text-red-200, .text-red-300, .text-red-400) {
+  color: #b91c1c; /* red-700 */
+}
+.light :is(.text-sky-200, .text-sky-300, .text-sky-400) {
+  color: #0369a1; /* sky-700 */
+}
+.light :is(.text-emerald-200, .text-emerald-300, .text-emerald-400) {
+  color: #047857; /* emerald-700 */
+}
+.light :is(.text-amber-300, .text-amber-400) {
+  color: #b45309; /* amber-700 */
 }
 
 html,
@@ -17,18 +85,19 @@ body,
 
 body {
   margin: 0;
-  background-color: #09090b; /* zinc-950 */
-  color: #f4f4f5; /* zinc-100 */
+  background-color: var(--canvas);
+  color: var(--ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Fixed grid texture used behind every screen */
 .bg-grid {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: 46px 46px;
 }
 
@@ -90,13 +159,13 @@ body {
   height: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--scroll-thumb);
   border-radius: 9999px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.16);
+  background: var(--scroll-thumb-hover);
   background-clip: content-box;
 }
 

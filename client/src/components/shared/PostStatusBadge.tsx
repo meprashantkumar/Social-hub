@@ -2,7 +2,7 @@ import type { PostStatus } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 const STYLES: Record<PostStatus, { label: string; cls: string }> = {
-  DRAFT: { label: "Draft", cls: "border-white/15 bg-white/5 text-zinc-400" },
+  DRAFT: { label: "Draft", cls: "border-line bg-surface text-muted" },
   PENDING_REVIEW: { label: "Pending review", cls: "border-amber-500/30 bg-amber-500/10 text-amber-300" },
   APPROVED: { label: "Approved", cls: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" },
   SCHEDULED: { label: "Scheduled", cls: "border-sky-500/30 bg-sky-500/10 text-sky-300" },

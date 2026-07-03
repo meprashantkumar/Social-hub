@@ -61,6 +61,16 @@ const envSchema = z.object({
   CLOUDINARY_API_KEY: z.string().optional(),
   CLOUDINARY_API_SECRET: z.string().optional(),
 
+  // Email (SMTP via Nodemailer) for transactional mail like password resets.
+  // Optional — email features are "not configured" until host/user/pass are set.
+  // For Gmail: host smtp.gmail.com, port 465, and an App Password (not your login).
+  EMAIL_SERVER_HOST: z.string().optional(),
+  EMAIL_SERVER_PORT: z.coerce.number().int().positive().default(465),
+  EMAIL_SERVER_USER: z.string().optional(),
+  EMAIL_SERVER_PASSWORD: z.string().optional(),
+  // Friendly From header, e.g. `SocialHub <you@gmail.com>`. Falls back to the user.
+  EMAIL_FROM: z.string().optional(),
+
   // Scheduler poll interval (seconds) for auto-publishing due posts. 0 disables it.
   SCHEDULER_INTERVAL_SECONDS: z.coerce.number().int().min(0).default(30),
 });

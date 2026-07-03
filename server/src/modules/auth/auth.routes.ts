@@ -4,7 +4,14 @@ import { asyncHandler } from "../../lib/asyncHandler";
 import { requireAuth } from "../../middleware/requireAuth";
 import { validateBody } from "../../middleware/validate";
 import * as authController from "./auth.controller";
-import { loginSchema, registerSchema } from "./auth.schemas";
+import {
+  changePasswordSchema,
+  forgotPasswordSchema,
+  loginSchema,
+  registerSchema,
+  resetPasswordSchema,
+  updateProfileSchema,
+} from "./auth.schemas";
 
 // Throttle credential-guessing on the unauthenticated endpoints.
 const authLimiter = rateLimit({
@@ -32,3 +39,31 @@ authRouter.post(
 authRouter.post("/refresh", asyncHandler(authController.refresh));
 authRouter.post("/logout", asyncHandler(authController.logout));
 authRouter.get("/me", requireAuth, asyncHandler(authController.me));
+
+// Account management (signed-in)
+authRouter.patch(
+  "/me",
+  requireAuth,
+  validateBody(updateProfileSchema),
+  asyncHandler(authController.updateMe)
+);
+authRouter.post(
+  "/change-password",
+  requireAuth,
+  validateBody(changePasswordSchema),
+  asyncHandler(authController.changePassword)
+);
+
+// Password reset (unauthenticated, rate-limited)
+authRouter.post(
+  "/forgot-password",
+  authLimiter,
+  validateBody(forgotPasswordSchema),
+  asyncHandler(authController.forgotPassword)
+);
+authRouter.post(
+  "/reset-password",
+  authLimiter,
+  validateBody(resetPasswordSchema),
+  asyncHandler(authController.resetPassword)
+);

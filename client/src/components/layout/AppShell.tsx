@@ -1,8 +1,10 @@
 import { useState, type ReactNode } from "react";
-import { NavLink } from "react-router-dom";
-import { BarChart3, CreditCard, Crown, FileText, LayoutDashboard, LogOut, Plug, Users2, type LucideIcon } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
+import { BarChart3, CreditCard, Crown, FileText, LayoutDashboard, LogOut, Plug, UserRound, Users2, type LucideIcon } from "lucide-react";
 import { GridBackground } from "@/components/shared/GridBackground";
 import { Logo } from "@/components/shared/Logo";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { Footer } from "@/components/layout/Footer";
 import { WorkspaceSwitcher } from "@/components/workspace/WorkspaceSwitcher";
 import { Button } from "@/components/ui/button";
 import { useAppData } from "@/context/AppContext";
@@ -15,7 +17,7 @@ function NavItem({ to, icon: Icon, children }: { to: string; icon: LucideIcon; c
       className={({ isActive }) =>
         cn(
           "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
-          isActive ? "bg-white/10 text-white" : "text-zinc-400 hover:bg-white/5 hover:text-zinc-100"
+          isActive ? "bg-surface-hover text-ink" : "text-muted hover:bg-surface hover:text-ink"
         )
       }
     >
@@ -39,14 +41,14 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative flex min-h-screen flex-col">
       <GridBackground />
 
-      <header className="sticky top-0 z-20 border-b border-white/5 bg-zinc-950/70 backdrop-blur-xl">
+      <header className="sticky top-0 z-20 border-b border-line bg-canvas/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-5 sm:px-8">
           <div className="flex items-center gap-2.5">
             <Logo showText={false} />
-            <span className="text-zinc-700">/</span>
+            <span className="text-faint">/</span>
             <WorkspaceSwitcher />
           </div>
 
@@ -76,13 +78,25 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Crown className="h-3 w-3" /> Pro
               </span>
             )}
+            <ThemeToggle />
             {user && (
-              <div
-                className="hidden h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 text-[11px] font-semibold text-white sm:flex"
-                title={user.name}
+              <Link
+                to="/account"
+                title="Account settings"
+                className="hidden rounded-full ring-offset-2 ring-offset-canvas transition-shadow hover:ring-2 hover:ring-violet-500/50 sm:block"
               >
-                {initials(user.name)}
-              </div>
+                {user.avatarUrl ? (
+                  <img
+                    src={user.avatarUrl}
+                    alt={user.name}
+                    className="h-8 w-8 rounded-full border border-line object-cover"
+                  />
+                ) : (
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 text-[11px] font-semibold text-white">
+                    {initials(user.name)}
+                  </span>
+                )}
+              </Link>
             )}
             <Button variant="outline" size="sm" loading={loggingOut} onClick={onLogout}>
               {!loggingOut && <LogOut className="h-4 w-4" />}
@@ -92,7 +106,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
 
         {/* Mobile nav */}
-        <nav className="flex items-center gap-1 overflow-x-auto border-t border-white/5 px-5 py-2 sm:hidden">
+        <nav className="flex items-center gap-1 overflow-x-auto border-t border-line px-5 py-2 sm:hidden">
           <NavItem to="/dashboard" icon={LayoutDashboard}>
             Overview
           </NavItem>
@@ -108,10 +122,15 @@ export function AppShell({ children }: { children: ReactNode }) {
           <NavItem to="/billing" icon={CreditCard}>
             Billing
           </NavItem>
+          <NavItem to="/account" icon={UserRound}>
+            Account
+          </NavItem>
         </nav>
       </header>
 
-      <main className="mx-auto max-w-6xl px-5 py-10 sm:px-8">{children}</main>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8">{children}</main>
+
+      <Footer />
     </div>
   );
 }

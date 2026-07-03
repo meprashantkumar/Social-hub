@@ -9,3 +9,9 @@ export const sign = async (req: Request, res: Response): Promise<void> => {
   const signature = service.signUpload(req.workspaceId!);
   res.json(signature);
 };
+
+/** Signed payload for the signed-in user's own avatar upload (no workspace). */
+export const signAvatar = async (req: Request, res: Response): Promise<void> => {
+  const signature = service.signAvatarUpload(req.userId!);
+  res.json(signature);
+};
