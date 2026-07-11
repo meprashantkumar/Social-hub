@@ -1,11 +1,11 @@
-/** Fixed dark backdrop: grid texture + drifting radial glows. Sits behind all pages. */
+/** Fixed backdrop: a fine grid texture with two soft, static glows. Kept
+ *  deliberately restrained so content — not the background — leads. */
 export function GridBackground() {
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-canvas">
-      <div className="bg-grid bg-grid-fade absolute inset-0 opacity-70" />
-      <div className="animate-drift absolute left-1/2 top-[-12%] h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-violet-600/20 blur-[130px]" />
-      <div className="absolute bottom-[-10%] right-[6%] h-[420px] w-[520px] rounded-full bg-indigo-700/15 blur-[130px]" />
-      <div className="absolute left-[4%] top-[30%] h-[320px] w-[320px] rounded-full bg-fuchsia-700/10 blur-[130px]" />
+      <div className="bg-grid bg-grid-fade absolute inset-0 opacity-50" />
+      <div className="absolute left-1/2 top-[-20%] h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-violet-600/10 blur-[150px]" />
+      <div className="absolute bottom-[-16%] right-[-6%] h-[360px] w-[440px] rounded-full bg-indigo-600/[0.08] blur-[160px]" />
     </div>
   );
 }

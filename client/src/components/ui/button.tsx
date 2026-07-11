@@ -4,21 +4,21 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:pointer-events-none disabled:opacity-60",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-[background-color,box-shadow,transform,color,border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:pointer-events-none disabled:opacity-55",
   {
     variants: {
       variant: {
         primary:
-          "bg-gradient-to-br from-violet-500 to-indigo-600 text-white shadow-lg shadow-violet-900/40 hover:from-violet-400 hover:to-indigo-500 hover:shadow-violet-700/50 active:scale-[0.99]",
+          "bg-violet-600 text-white shadow-sm ring-1 ring-inset ring-white/10 hover:bg-violet-500 active:translate-y-px",
         outline:
-          "border border-line bg-surface text-ink hover:bg-surface-hover hover:border-line-strong",
+          "border border-line bg-surface text-ink hover:bg-surface-hover hover:border-line-strong active:translate-y-px",
         ghost: "text-muted hover:bg-surface hover:text-ink",
       },
       size: {
-        default: "h-11 px-5",
-        sm: "h-9 px-3.5",
-        lg: "h-12 px-6 text-[15px]",
-        icon: "h-10 w-10",
+        default: "h-10 px-4",
+        sm: "h-8 px-3 text-[13px]",
+        lg: "h-11 px-5 text-[15px]",
+        icon: "h-9 w-9",
       },
     },
     defaultVariants: { variant: "primary", size: "default" },
