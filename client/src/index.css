@@ -6,24 +6,6 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: "Space Grotesk", "Inter", ui-sans-serif, sans-serif;
-  
-  /* Map theme colors to dynamic variables */
-  --color-violet-50: var(--violet-50);
-  --color-violet-100: var(--violet-100);
-  --color-violet-200: var(--violet-200);
-  --color-violet-300: var(--violet-300);
-  --color-violet-400: var(--violet-400);
-  --color-violet-500: var(--violet-500);
-  --color-violet-600: var(--violet-600);
-  --color-violet-700: var(--violet-700);
-  --color-violet-800: var(--violet-800);
-  --color-violet-900: var(--violet-900);
-  
-  --color-indigo-500: var(--indigo-500);
-  --color-indigo-600: var(--indigo-600);
-  
-  --color-fuchsia-400: var(--fuchsia-400);
-  --color-fuchsia-500: var(--fuchsia-500);
 }
 
 /* Semantic color tokens — utilities (bg-canvas, text-ink, border-line, …) resolve
@@ -40,79 +22,47 @@
   --color-faint: var(--faint);
 }
 
-/* Dark theme using the deep navy (#0B1849), light beige (#F5F5DC), vibrant pink (#FF3483), bright teal (#00E0BA), and golden yellow (#FBC02D) */
+/* Dark theme (default) — values match the original design exactly, so dark mode
+   is visually unchanged from before the theme system was introduced. */
 :root,
 .dark {
   color-scheme: dark;
-  --canvas: #0B1849;
-  --panel: #112260;
-  --surface: rgba(255, 255, 255, 0.04);
-  --surface-hover: rgba(255, 255, 255, 0.08);
-  --line: rgba(0, 224, 186, 0.15);
-  --line-strong: rgba(0, 224, 186, 0.28);
-  --ink: #F5F5DC;
-  --muted: #F4F2F2;
-  --faint: rgba(245, 245, 220, 0.5);
-  --grid-line: rgba(0, 224, 186, 0.06);
-  --scroll-thumb: rgba(0, 224, 186, 0.15);
-  --scroll-thumb-hover: rgba(0, 224, 186, 0.28);
-
-  --violet-50: #e6fcf8;
-  --violet-100: #ccf9f2;
-  --violet-200: #99f3e4;
-  --violet-300: #66edd7;
-  --violet-400: #33e6ca;
-  --violet-500: #00E0BA;
-  --violet-600: #00c2a1;
-  --violet-700: #009d82;
-  --violet-800: #215E61;
-  --violet-900: #123436;
-
-  --indigo-500: #FF3483;
-  --indigo-600: #e0226c;
-
-  --fuchsia-400: #FBC02D;
-  --fuchsia-500: #FBC02D;
+  --canvas: #09090b;
+  --panel: #18181b;
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-hover: rgba(255, 255, 255, 0.07);
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --ink: #f4f4f5;
+  --muted: #a1a1aa;
+  --faint: #71717a;
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --scroll-thumb: rgba(255, 255, 255, 0.08);
+  --scroll-thumb-hover: rgba(255, 255, 255, 0.16);
 }
 
-/* Light theme using beige (#F5F5DC), off-white/light gray (#F4F2F2), deep teal/pine (#215E61), and navy (#0B1849) */
+/* Light theme — clean, modern, professional. Text tokens are kept dark for strong
+   contrast on the near-white canvas. */
 .light {
   color-scheme: light;
-  --canvas: #F5F5DC;
-  --panel: #F4F2F2;
-  --surface: rgba(11, 24, 73, 0.04);
-  --surface-hover: rgba(11, 24, 73, 0.08);
-  --line: rgba(11, 24, 73, 0.12);
-  --line-strong: rgba(11, 24, 73, 0.22);
-  --ink: #0B1849;
-  --muted: #215E61;
-  --faint: #536872;
-  --grid-line: rgba(11, 24, 73, 0.06);
-  --scroll-thumb: rgba(11, 24, 73, 0.15);
-  --scroll-thumb-hover: rgba(11, 24, 73, 0.28);
-
-  --violet-50: #f4fafb;
-  --violet-100: #e5f3f4;
-  --violet-200: #cce7e9;
-  --violet-300: #9cd0d3;
-  --violet-400: #62aeb2;
-  --violet-500: #215E61;
-  --violet-600: #1a4a4d;
-  --violet-700: #153a3c;
-  --violet-800: #0f2a2c;
-  --violet-900: #0a1b1c;
-
-  --indigo-500: #FF3483;
-  --indigo-600: #e0226c;
-
-  --fuchsia-400: #FBC02D;
-  --fuchsia-500: #FBC02D;
+  --canvas: #f4f4f6;
+  --panel: #ffffff;
+  --surface: rgba(24, 24, 27, 0.035);
+  --surface-hover: rgba(24, 24, 27, 0.07);
+  --line: rgba(24, 24, 27, 0.12);
+  --line-strong: rgba(24, 24, 27, 0.22);
+  --ink: #18181b;
+  --muted: #3f3f46; /* zinc-700 — readable secondary text */
+  --faint: #52525b; /* zinc-600 — readable tertiary text */
+  --grid-line: rgba(24, 24, 27, 0.055);
+  --scroll-thumb: rgba(24, 24, 27, 0.16);
+  --scroll-thumb-hover: rgba(24, 24, 27, 0.28);
 }
 
 /* Pale accent text (chosen for dark backgrounds) is too faint on the light canvas.
    Darken those specific shades in light mode so badges/pills stay readable. */
 .light :is(.text-violet-200, .text-violet-300, .text-violet-400) {
-  color: var(--violet-600);
+  color: #6d28d9; /* violet-700 */
 }
 .light :is(.text-red-200, .text-red-300, .text-red-400) {
   color: #b91c1c; /* red-700 */
@@ -214,5 +164,5 @@ body {
 }
 
 ::selection {
-  background: rgba(0, 224, 186, 0.35); /* Bright Teal/35 selection */
+  background: rgba(139, 92, 246, 0.35); /* violet-500/35 */
 }
